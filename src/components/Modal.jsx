@@ -39,6 +39,9 @@ export default function Modal({
         style={{ maxWidth }}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
+        {/* Android Native Bottom Sheet Handle (visible on mobile) */}
+        <div className="android-sheet-handle-pill" />
+
         <div className="modal-header">
           <div className="modal-title">
             {Icon && <Icon size={20} color="#0D9488" />}

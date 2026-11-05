@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
+import BottomNav from './components/BottomNav';
 import ToastContainer from './components/Toast';
 
 // Pages
@@ -345,6 +346,16 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {/* Android Bottom Navigation Bar for Mobile */}
+      <BottomNav
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        pendingCount={pendingRequestsCount}
+        onOpenQuickModal={handleQuickAction}
+        currentUser={currentUser}
+        onLogout={handleLogout}
+      />
 
       {/* Floating Toast Notification Container */}
       <ToastContainer toasts={toasts} onDismiss={handleDismissToast} />
