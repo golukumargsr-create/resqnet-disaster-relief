@@ -1,0 +1,25 @@
+{
+  "name": "ResQNet – Disaster Relief Platform",
+  "short_name": "ResQNet",
+  "description": "Connecting Resources. Coordinating Relief. Saving Lives.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F4F7FA",
+  "theme_color": "#10243A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%2310243A'%3E%3Crect width='512' height='512' rx='128' fill='%2310243A'/%3E%3Cpath d='M256 64L416 136V248C416 352 344 424 256 448C168 424 96 352 96 248V136L256 64Z' fill='%230D9488'/%3E%3Cpath d='M256 160V352M160 256H352' stroke='%23FFFFFF' stroke-width='40' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%2310243A'%3E%3Crect width='512' height='512' rx='128' fill='%2310243A'/%3E%3Cpath d='M256 64L416 136V248C416 352 344 424 256 448C168 424 96 352 96 248V136L256 64Z' fill='%230D9488'/%3E%3Cpath d='M256 160V352M160 256H352' stroke='%23FFFFFF' stroke-width='40' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+
