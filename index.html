@@ -1,29 +1,1197 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>ResQNet – Disaster Relief Resource Coordination Platform</title>
-    
-    <!-- Android & Mobile Chrome Theme Controls -->
-    <meta name="theme-color" content="#10243A" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="application-name" content="ResQNet" />
-    <meta name="format-detection" content="telephone=no" />
-    
-    <!-- Web App Manifest for Android Installation -->
-    <link rel="manifest" href="./manifest.json" />
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230D9488' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/%3E%3C/svg%3E" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="./src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>ResQNet – Disaster Relief Resource Coordination Platform</title>
+
+  <!-- Mobile / Android Theming -->
+  <meta name="theme-color" content="#0A192F" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Font Awesome 6 Icons CDN (Prof-friendly, universal, no npm build required) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- App Layout -->
+  <div class="app-layout">
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleMobileSidebar(false)"></div>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside id="sidebar" class="sidebar">
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+        <div class="brand-wrapper" onclick="switchSection('sec-dashboard')">
+          <div class="brand-icon-box">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">
+              ResQNet
+              <span class="brand-badge">PRO</span>
+            </span>
+            <span class="brand-tagline">Relief Command Hub</span>
+          </div>
+        </div>
+
+        <button type="button" class="sidebar-toggle-btn" onclick="toggleSidebarCollapse()" title="Toggle Sidebar">
+          <i id="collapseIcon" class="fa-solid fa-chevron-left"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Operations Control</div>
+
+        <button type="button" class="nav-link active" data-target="sec-dashboard" onclick="switchSection('sec-dashboard')">
+          <span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>
+          <span>Command Center</span>
+        </button>
+
+        <button type="button" class="nav-link" data-target="sec-disasters" onclick="switchSection('sec-disasters')">
+          <span class="nav-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <span>Disaster Reports</span>
+        </button>
+
+        <button type="button" class="nav-link" data-target="sec-requests" onclick="switchSection('sec-requests')">
+          <span class="nav-icon"><i class="fa-solid fa-hand-holding-hand"></i></span>
+          <span>Relief Requests</span>
+          <span id="sidebarPendingBadge" class="nav-badge" style="display:none;">0</span>
+        </button>
+
+        <button type="button" class="nav-link" data-target="sec-inventory" onclick="switchSection('sec-inventory')">
+          <span class="nav-icon"><i class="fa-solid fa-boxes-stacked"></i></span>
+          <span>Resource Inventory</span>
+        </button>
+
+        <button type="button" class="nav-link" data-target="sec-volunteers" onclick="switchSection('sec-volunteers')">
+          <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
+          <span>Volunteer Registry</span>
+        </button>
+
+        <button type="button" class="nav-link" data-target="sec-allocations" onclick="switchSection('sec-allocations')">
+          <span class="nav-icon"><i class="fa-solid fa-truck-fast"></i></span>
+          <span>Allocation Hub</span>
+        </button>
+
+        <div class="nav-section-title">Intelligence</div>
+
+        <button type="button" class="nav-link" data-target="sec-reports" onclick="switchSection('sec-reports')">
+          <span class="nav-icon"><i class="fa-solid fa-chart-column"></i></span>
+          <span>Analytics &amp; CSV</span>
+        </button>
+
+        <button type="button" class="nav-link" data-target="sec-about" onclick="switchSection('sec-about')">
+          <span class="nav-icon"><i class="fa-solid fa-circle-info"></i></span>
+          <span>About &amp; Controls</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="officer-profile-card">
+          <div class="officer-avatar">CO</div>
+          <div class="officer-details">
+            <span class="officer-name">Commander Verma</span>
+            <span class="officer-role">Chief Relief Coordinator</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEW WRAPPER -->
+    <div class="main-wrapper">
+
+      <!-- TOP APP HEADER -->
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button type="button" class="mobile-menu-toggle" onclick="toggleMobileSidebar(true)" aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-header-info">
+            <h1 id="pageTitle" class="current-page-title">
+              <i class="fa-solid fa-gauge-high" style="color:var(--teal-primary)"></i>
+              Disaster Relief Command Dashboard
+            </h1>
+            <span id="pageSubtitle" class="current-page-desc">
+              Live operational overview of disaster incidents, resource stock, and volunteer deployment
+            </span>
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <div class="live-status-pill">
+            <span class="pulse-indicator"></span>
+            <span>SYSTEM LIVE</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT VIEWPORT -->
+      <main class="content-viewport">
+
+        <!-- ========================================================
+             1. DASHBOARD SECTION
+             ======================================================== -->
+        <section id="sec-dashboard" class="app-section active-section">
+          <!-- Hero Emergency Overview Banner -->
+          <div class="emergency-hero-banner">
+            <div class="hero-banner-content">
+              <h2>
+                <i class="fa-solid fa-tower-broadcast" style="color:var(--emergency-orange)"></i>
+                ResQNet Emergency Operations Command Center
+              </h2>
+              <p>
+                Centralized disaster management platform coordinating food rations, drinking water, medical kits, and volunteer squads across critical relief zones.
+              </p>
+            </div>
+            <div class="hero-actions">
+              <button type="button" class="btn btn-orange" onclick="openDisasterModal()">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Report Disaster</span>
+              </button>
+              <button type="button" class="btn btn-primary" onclick="openRequestModal()">
+                <i class="fa-solid fa-plus"></i>
+                <span>Create Request</span>
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="openAllocationModal()">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Dispatch Supplies</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5 Major Statistics Cards -->
+          <div class="stats-grid-five">
+            <div class="stat-metric-card" onclick="switchSection('sec-disasters')">
+              <div class="stat-metric-header">
+                <span class="stat-metric-label">Disaster Reports</span>
+                <div class="stat-metric-icon" style="background:#FEE2E2; color:#DC2626;">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+              </div>
+              <div id="statTotalDisasters" class="stat-metric-value">0</div>
+              <div class="stat-metric-subtext">
+                <i class="fa-solid fa-location-dot" style="color:#DC2626"></i>
+                <span id="statActiveAreasSubtext">0 Active zones</span>
+              </div>
+            </div>
+
+            <div class="stat-metric-card" onclick="switchSection('sec-requests')">
+              <div class="stat-metric-header">
+                <span class="stat-metric-label">Active Requests</span>
+                <div class="stat-metric-icon" style="background:#FEF3C7; color:#D97706;">
+                  <i class="fa-solid fa-hand-holding-hand"></i>
+                </div>
+              </div>
+              <div id="statActiveRequests" class="stat-metric-value">0</div>
+              <div class="stat-metric-subtext">
+                <i class="fa-solid fa-clock" style="color:#D97706"></i>
+                <span id="statPendingRequestsSubtext">0 pending review</span>
+              </div>
+            </div>
+
+            <div class="stat-metric-card" onclick="switchSection('sec-inventory')">
+              <div class="stat-metric-header">
+                <span class="stat-metric-label">Available Supplies</span>
+                <div class="stat-metric-icon" style="background:#F0FDFA; color:#0D9488;">
+                  <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+              </div>
+              <div id="statAvailableResources" class="stat-metric-value">0</div>
+              <div class="stat-metric-subtext">
+                <i class="fa-solid fa-warehouse" style="color:#0D9488"></i>
+                <span>Across regional depots</span>
+              </div>
+            </div>
+
+            <div class="stat-metric-card" onclick="switchSection('sec-volunteers')">
+              <div class="stat-metric-header">
+                <span class="stat-metric-label">Volunteers</span>
+                <div class="stat-metric-icon" style="background:#F3E8FF; color:#7E22CE;">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+              </div>
+              <div id="statTotalVolunteers" class="stat-metric-value">0</div>
+              <div class="stat-metric-subtext">
+                <i class="fa-solid fa-user-check" style="color:#10B981"></i>
+                <span id="statActiveVolunteersSubtext">0 currently deployed</span>
+              </div>
+            </div>
+
+            <div class="stat-metric-card" onclick="switchSection('sec-allocations')">
+              <div class="stat-metric-header">
+                <span class="stat-metric-label">Operations Done</span>
+                <div class="stat-metric-icon" style="background:#ECFDF5; color:#10B981;">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+              </div>
+              <div id="statCompletedOps" class="stat-metric-value">0</div>
+              <div class="stat-metric-subtext">
+                <i class="fa-solid fa-truck" style="color:#10B981"></i>
+                <span>Relief delivered</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Overview: Available Resources Grid -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">
+                  <i class="fa-solid fa-boxes-stacked" style="color:var(--teal-primary)"></i>
+                  Resource Inventory Overview
+                </h3>
+                <p class="card-subtitle">Real-time stock quantities in active regional warehouses</p>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="switchSection('sec-inventory')">
+                Manage Stock &rarr;
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="resource-summary-grid">
+                <div class="resource-summary-box">
+                  <div class="resource-summary-icon" style="color:var(--teal-primary)"><i class="fa-solid fa-utensils"></i></div>
+                  <div id="dashFoodUnits" class="resource-summary-value">0</div>
+                  <div class="resource-summary-name">Food Packages</div>
+                  <span style="font-size:0.7rem; color:#64748B;">Dry food &amp; rations</span>
+                </div>
+
+                <div class="resource-summary-box">
+                  <div class="resource-summary-icon" style="color:#0284C7"><i class="fa-solid fa-bottle-water"></i></div>
+                  <div id="dashWaterUnits" class="resource-summary-value">0</div>
+                  <div class="resource-summary-name">Drinking Water</div>
+                  <span style="font-size:0.7rem; color:#64748B;">Bottled &amp; purified (L)</span>
+                </div>
+
+                <div class="resource-summary-box">
+                  <div class="resource-summary-icon" style="color:var(--emergency-red)"><i class="fa-solid fa-notes-medical"></i></div>
+                  <div id="dashMedicalUnits" class="resource-summary-value">0</div>
+                  <div class="resource-summary-name">Medical Kits</div>
+                  <span style="font-size:0.7rem; color:#64748B;">Trauma kits &amp; meds</span>
+                </div>
+
+                <div class="resource-summary-box">
+                  <div class="resource-summary-icon" style="color:#854D0E"><i class="fa-solid fa-rug"></i></div>
+                  <div id="dashBlanketUnits" class="resource-summary-value">0</div>
+                  <div class="resource-summary-name">Thermal Blankets</div>
+                  <span style="font-size:0.7rem; color:#64748B;">Warm bedding pieces</span>
+                </div>
+
+                <div class="resource-summary-box">
+                  <div class="resource-summary-icon" style="color:#4F46E5"><i class="fa-solid fa-campground"></i></div>
+                  <div id="dashShelterUnits" class="resource-summary-value">0</div>
+                  <div class="resource-summary-name">Shelter Tents</div>
+                  <span style="font-size:0.7rem; color:#64748B;">Weatherproof units</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Two Column: Priority Distribution & Incident Monitoring -->
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+            <!-- Priority Distribution -->
+            <div class="card" style="margin-bottom:0;">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <i class="fa-solid fa-chart-pie" style="color:var(--emergency-orange)"></i>
+                    Request Priority Distribution
+                  </h3>
+                  <p class="card-subtitle">Urgency tier distribution of relief requisitions</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="priorityBarsContainer" class="progress-list">
+                  <!-- Rendered dynamically by script.js -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Incident Activity Feed -->
+            <div class="card" style="margin-bottom:0;">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <i class="fa-solid fa-clock-rotate-left" style="color:#2563EB"></i>
+                    Incident Monitoring &amp; Log Feed
+                  </h3>
+                  <p class="card-subtitle">Real-time incident dispatches and completion records</p>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="switchSection('sec-reports')">
+                  Full Log
+                </button>
+              </div>
+              <div class="card-body">
+                <div id="dashActivityList" class="activity-feed-list">
+                  <!-- Rendered dynamically by script.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Requests Table on Dashboard -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">
+                  <i class="fa-solid fa-list-check" style="color:var(--teal-primary)"></i>
+                  Recent Relief Requests
+                </h3>
+                <p class="card-subtitle">Latest emergency supplies requested from field relief camps</p>
+              </div>
+              <button type="button" class="btn btn-primary btn-sm" onclick="switchSection('sec-requests')">
+                View All Requests &rarr;
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Request ID</th>
+                    <th>Affected Zone</th>
+                    <th>Supply Required</th>
+                    <th>Quantity</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dashRecentRequestsTbody">
+                  <!-- Rendered by script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ========================================================
+             2. DISASTER REPORTS & AFFECTED AREAS
+             ======================================================== -->
+        <section id="sec-disasters" class="app-section">
+          <div class="card">
+            <div class="table-toolbar">
+              <div class="toolbar-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="disasterSearchInput" placeholder="Search disaster by zone, district, state..." oninput="renderDisastersTable()" />
+              </div>
+
+              <div class="toolbar-controls">
+                <select id="disasterTypeFilter" class="filter-select" onchange="renderDisastersTable()">
+                  <option value="All">All Disaster Types</option>
+                  <option value="Flood">Flood</option>
+                  <option value="Earthquake">Earthquake</option>
+                  <option value="Cyclone">Cyclone</option>
+                  <option value="Landslide">Landslide</option>
+                  <option value="Other">Other</option>
+                </select>
+
+                <select id="disasterSeverityFilter" class="filter-select" onchange="renderDisastersTable()">
+                  <option value="All">All Severities</option>
+                  <option value="Critical">Critical</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+
+                <button type="button" class="btn btn-orange" onclick="openDisasterModal()">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>Report Disaster</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Report ID</th>
+                    <th>Zone / Area</th>
+                    <th>Location</th>
+                    <th>Disaster Type</th>
+                    <th>Severity</th>
+                    <th>Affected Population</th>
+                    <th>Status</th>
+                    <th>Date Reported</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="disastersTableBody">
+                  <!-- Injected via script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ========================================================
+             3. RELIEF REQUESTS
+             ======================================================== -->
+        <section id="sec-requests" class="app-section">
+          <div class="card">
+            <div class="table-toolbar">
+              <div class="toolbar-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="requestSearchInput" placeholder="Search by ID, area, resource, contact..." oninput="renderRequestsTable()" />
+              </div>
+
+              <div class="toolbar-controls">
+                <select id="requestPriorityFilter" class="filter-select" onchange="renderRequestsTable()">
+                  <option value="All">All Priorities</option>
+                  <option value="Critical">Critical</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+
+                <select id="requestStatusFilter" class="filter-select" onchange="renderRequestsTable()">
+                  <option value="All">All Statuses</option>
+                  <option value="Pending">Pending</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+
+                <button type="button" class="btn btn-primary" onclick="openRequestModal()">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>New Relief Request</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Request ID</th>
+                    <th>Target Zone</th>
+                    <th>Required Resource</th>
+                    <th>Quantity</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Coordinator Contact</th>
+                    <th>Date</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="requestsTableBody">
+                  <!-- Injected via script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ========================================================
+             4. RESOURCE INVENTORY
+             ======================================================== -->
+        <section id="sec-inventory" class="app-section">
+          <div class="card">
+            <div class="table-toolbar">
+              <div class="toolbar-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="inventorySearchInput" placeholder="Search inventory name, warehouse, category..." oninput="renderInventoryTable()" />
+              </div>
+
+              <div class="toolbar-controls">
+                <select id="inventoryCategoryFilter" class="filter-select" onchange="renderInventoryTable()">
+                  <option value="All">All Categories</option>
+                  <option value="Food">Food</option>
+                  <option value="Drinking Water">Drinking Water</option>
+                  <option value="Medicines">Medicines</option>
+                  <option value="Medical Kits">Medical Kits</option>
+                  <option value="Blankets">Blankets</option>
+                  <option value="Shelter Equipment">Shelter Equipment</option>
+                  <option value="Other Essentials">Other Essentials</option>
+                </select>
+
+                <select id="inventoryStockFilter" class="filter-select" onchange="renderInventoryTable()">
+                  <option value="All">All Stock Levels</option>
+                  <option value="Low">Low Stock Alerts (&lt; 50 units)</option>
+                  <option value="Normal">Adequate Stock (&ge; 50 units)</option>
+                </select>
+
+                <button type="button" class="btn btn-primary" onclick="openResourceModal()">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>Add Supply Item</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Item ID</th>
+                    <th>Resource Name</th>
+                    <th>Category</th>
+                    <th>Available Stock</th>
+                    <th>Storage Warehouse</th>
+                    <th>Stock Alert</th>
+                    <th>Last Updated</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryTableBody">
+                  <!-- Injected via script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ========================================================
+             5. VOLUNTEER REGISTRY
+             ======================================================== -->
+        <section id="sec-volunteers" class="app-section">
+          <div class="card">
+            <div class="table-toolbar">
+              <div class="toolbar-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="volunteerSearchInput" placeholder="Search volunteer name, phone, skill, area..." oninput="renderVolunteersTable()" />
+              </div>
+
+              <div class="toolbar-controls">
+                <select id="volunteerAvailabilityFilter" class="filter-select" onchange="renderVolunteersTable()">
+                  <option value="All">All Availability</option>
+                  <option value="Available">Available (Ready for Dispatch)</option>
+                  <option value="Busy">Busy (Deployed)</option>
+                  <option value="Unavailable">Unavailable / Leave</option>
+                </select>
+
+                <button type="button" class="btn btn-primary" onclick="openVolunteerModal()">
+                  <i class="fa-solid fa-user-plus"></i>
+                  <span>Register Volunteer</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Volunteer ID</th>
+                    <th>Full Name</th>
+                    <th>Contact Phone</th>
+                    <th>Skillset / Specialization</th>
+                    <th>Current Zone</th>
+                    <th>Availability</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="volunteersTableBody">
+                  <!-- Injected via script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ========================================================
+             6. RESOURCE ALLOCATION HUB
+             ======================================================== -->
+        <section id="sec-allocations" class="app-section">
+          <!-- Hub Hero Card -->
+          <div class="emergency-hero-banner" style="background: linear-gradient(135deg, #10243A 0%, #0F766E 100%); border-left-color: var(--teal-primary);">
+            <div class="hero-banner-content">
+              <h2>
+                <i class="fa-solid fa-truck-ramp-box" style="color:#5EEAD4"></i>
+                Centralized Supply Allocation Hub
+              </h2>
+              <p>
+                Match verified camp requests with available warehouse inventory, deduct stock in real time, and deploy active volunteers with delivery tracking.
+              </p>
+            </div>
+            <div class="hero-actions">
+              <button type="button" class="btn btn-orange" onclick="openAllocationModal()">
+                <i class="fa-solid fa-plus-circle"></i>
+                <span>Execute Supply Allocation</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Allocations History Table -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">
+                  <i class="fa-solid fa-truck-fast" style="color:var(--teal-primary)"></i>
+                  Supply Consignments &amp; Dispatch History
+                </h3>
+                <p class="card-subtitle">Verified audit log of all relief supplies dispatched to affected zones</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Allocation ID</th>
+                    <th>Request Ref</th>
+                    <th>Target Zone</th>
+                    <th>Supply Dispatched</th>
+                    <th>Quantity</th>
+                    <th>Assigned Volunteer</th>
+                    <th>Date Dispatched</th>
+                    <th>Delivery Status</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="allocationsTableBody">
+                  <!-- Injected via script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ========================================================
+             7. ANALYTICS & REPORTS (With Working CSV Export)
+             ======================================================== -->
+        <section id="sec-reports" class="app-section">
+          <!-- Top Export Banner -->
+          <div class="card" style="padding: 1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; border-left: 4px solid var(--teal-primary);">
+            <div>
+              <h3 style="font-size:1.15rem; font-weight:800; color:var(--navy-dark); display:flex; align-items:center; gap:0.5rem;">
+                <i class="fa-solid fa-file-csv" style="color:var(--teal-primary)"></i>
+                Operational Reports &amp; Data Export Center
+              </h3>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;">
+                Generate official spreadsheets and analytical breakdowns for relief coordinators.
+              </p>
+            </div>
+
+            <div style="display:flex; gap:0.65rem; flex-wrap:wrap;">
+              <button type="button" class="btn btn-navy btn-sm" onclick="exportRequestsToCSV()">
+                <i class="fa-solid fa-download"></i>
+                <span>Export Requests CSV</span>
+              </button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="exportInventoryToCSV()">
+                <i class="fa-solid fa-download"></i>
+                <span>Export Inventory CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2-Column Visual Charts -->
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+            <!-- Category Breakdown -->
+            <div class="card" style="margin-bottom:0;">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-solid fa-layer-group" style="color:var(--teal-primary)"></i>
+                  Resource Distribution by Category
+                </h3>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Stock Units</span>
+              </div>
+              <div class="card-body">
+                <div id="reportsCategoryBars" class="progress-list">
+                  <!-- Injected by script.js -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Request Urgency Breakdown -->
+            <div class="card" style="margin-bottom:0;">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-solid fa-chart-simple" style="color:#2563EB"></i>
+                  Request Lifecycle Breakdown
+                </h3>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Status percentage</span>
+              </div>
+              <div class="card-body">
+                <div id="reportsStatusBars" class="progress-list">
+                  <!-- Injected by script.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ========================================================
+             8. ABOUT PLATFORM & SYSTEM CONTROLS
+             ======================================================== -->
+        <section id="sec-about" class="app-section">
+          <div class="card" style="padding:1.75rem; border-left: 4px solid var(--teal-primary); margin-bottom: 1.5rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
+              <div class="brand-icon-box" style="width:42px; height:42px; font-size:1.25rem;">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <h2 style="font-size:1.35rem; font-weight:800; color:var(--navy-dark);">
+                  ResQNet – Disaster Relief Coordination Platform
+                </h2>
+                <span style="font-size:0.84rem; color:var(--teal-primary); font-weight:700;">
+                  Connecting Resources. Coordinating Relief. Saving Lives.
+                </span>
+              </div>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-body); line-height:1.6;">
+              ResQNet is an academic Internet Programming practical project designed to demonstrate practical concepts of <strong>HTML5 semantic elements, modern CSS3 layout and design systems, and Vanilla JavaScript DOM manipulation and localStorage persistence</strong>. It models a command center coordinating food, water, medical trauma kits, shelters, and emergency volunteers during flood, cyclone, landslide, and earthquake crises.
+            </p>
+          </div>
+
+          <!-- Tech Architecture Grid -->
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+            <div class="card" style="margin-bottom:0;">
+              <div class="card-header">
+                <h3 class="card-title"><i class="fa-solid fa-code" style="color:var(--teal-primary)"></i> Technology Stack</h3>
+              </div>
+              <div class="card-body" style="font-size:0.84rem; color:var(--text-body); display:flex; flex-direction:column; gap:0.5rem;">
+                <div><strong>Frontend:</strong> 100% Pure HTML5, CSS3, Vanilla JavaScript</div>
+                <div><strong>Storage API:</strong> Browser localStorage (Zero backend needed)</div>
+                <div><strong>Iconography:</strong> Font Awesome 6 (CDN-based)</div>
+                <div><strong>Architecture:</strong> Single Page Application (SPA) with section swapping</div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-bottom:0;">
+              <div class="card-header">
+                <h3 class="card-title"><i class="fa-solid fa-triangle-exclamation" style="color:var(--emergency-orange)"></i> Academic Viva Notes</h3>
+              </div>
+              <div class="card-body" style="font-size:0.84rem; color:var(--text-body); display:flex; flex-direction:column; gap:0.5rem;">
+                <div><strong>No Frameworks:</strong> Zero React, Bootstrap, or Tailwind</div>
+                <div><strong>CRUD:</strong> Built with native array methods (filter, map, push)</div>
+                <div><strong>State Persistence:</strong> Survived across page reloads via JSON serialization</div>
+                <div><strong>Export:</strong> Real-time browser CSV generation via Blob API</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reset Demo Records Box -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-solid fa-rotate-left" style="color:var(--emergency-red)"></i>
+                Demonstration Controls
+              </h3>
+            </div>
+            <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+              <div>
+                <strong style="color:var(--navy-dark)">Reset Sample Demonstration Data</strong>
+                <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.2rem;">
+                  Restore all default sample disaster incidents, supplies, and volunteers for viva presentation.
+                </p>
+              </div>
+              <button type="button" class="btn btn-danger btn-sm" onclick="confirmResetDemoData()">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Reset Demo Data</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- APP FOOTER -->
+      <footer class="app-footer">
+        <strong>ResQNet Disaster Relief Coordination System</strong> &bull; Developed for Academic Internet Programming Evaluation &bull; HTML5 &bull; CSS3 &bull; Vanilla JavaScript
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- ========================================================
+       MODAL DIALOGS
+       ======================================================== -->
+
+  <!-- 1. DISASTER REPORT MODAL -->
+  <div id="disasterModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="disasterModalTitle" class="modal-title">
+          <i class="fa-solid fa-triangle-exclamation" style="color:var(--emergency-orange)"></i>
+          Report Disaster Incident
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="closeModal('disasterModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="disasterForm" onsubmit="handleDisasterSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="disasterEditId" value="" />
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="form-label">Zone / Area Name <span class="required">*</span></label>
+              <input type="text" id="disasterName" class="form-input" placeholder="e.g. Assam Brahmaputra River Basin" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">District <span class="required">*</span></label>
+              <input type="text" id="disasterDistrict" class="form-input" placeholder="e.g. Kamrup" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">State <span class="required">*</span></label>
+              <input type="text" id="disasterState" class="form-input" placeholder="e.g. Assam" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Disaster Type <span class="required">*</span></label>
+              <select id="disasterType" class="form-select">
+                <option value="Flood">Flood</option>
+                <option value="Earthquake">Earthquake</option>
+                <option value="Cyclone">Cyclone</option>
+                <option value="Landslide">Landslide</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Severity Level <span class="required">*</span></label>
+              <select id="disasterSeverity" class="form-select">
+                <option value="Critical">Critical (Immediate Evacuation)</option>
+                <option value="High">High (Urgent Medical / Food)</option>
+                <option value="Medium">Medium (Displaced Camps)</option>
+                <option value="Low">Low (General Warning)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Estimated Affected Population <span class="required">*</span></label>
+              <input type="number" id="disasterPopulation" min="1" class="form-input" placeholder="e.g. 25000" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Zone Status</label>
+              <select id="disasterStatus" class="form-select">
+                <option value="Active">Active Emergency</option>
+                <option value="Monitoring">Monitoring Stage</option>
+                <option value="Relieved">Relieved / Stabilized</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label class="form-label">Immediate Required Assistance <span class="required">*</span></label>
+              <textarea id="disasterAssistance" rows="2" class="form-textarea" placeholder="e.g. Food packets, drinking water purification, rescue speedboats..." required></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('disasterModal')">Cancel</button>
+          <button type="submit" class="btn btn-orange">Save Disaster Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 2. RELIEF REQUEST MODAL -->
+  <div id="requestModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="requestModalTitle" class="modal-title">
+          <i class="fa-solid fa-hand-holding-hand" style="color:var(--teal-primary)"></i>
+          Create Relief Supply Request
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="closeModal('requestModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="requestForm" onsubmit="handleRequestSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="requestEditId" value="" />
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="form-label">Target Affected Zone <span class="required">*</span></label>
+              <select id="requestAreaSelect" class="form-select" required>
+                <!-- Populated dynamically from disasters list -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Resource Required <span class="required">*</span></label>
+              <select id="requestResourceSelect" class="form-select" required>
+                <!-- Populated dynamically from resources list -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Quantity Required <span class="required">*</span></label>
+              <input type="number" id="requestQuantity" min="1" class="form-input" placeholder="e.g. 500" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority Urgency <span class="required">*</span></label>
+              <select id="requestPriority" class="form-select">
+                <option value="Critical">Critical (Immediate hazard)</option>
+                <option value="High">High (Within 12 hours)</option>
+                <option value="Medium">Medium (Within 24-48 hours)</option>
+                <option value="Low">Low (Replenishment)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Request Status</label>
+              <select id="requestStatus" class="form-select">
+                <option value="Pending">Pending Review</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Coordinator Name <span class="required">*</span></label>
+              <input type="text" id="requestContactPerson" class="form-input" placeholder="e.g. Dr. Ananya Sharma" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Phone (10 digits) <span class="required">*</span></label>
+              <input type="tel" id="requestContactNumber" maxlength="10" class="form-input" placeholder="e.g. 9876543210" required />
+            </div>
+            <div class="form-group full-width">
+              <label class="form-label">Emergency Situation Notes</label>
+              <textarea id="requestDescription" rows="2" class="form-textarea" placeholder="Detail the urgency and camp conditions..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('requestModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 3. RESOURCE INVENTORY MODAL -->
+  <div id="resourceModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="resourceModalTitle" class="modal-title">
+          <i class="fa-solid fa-boxes-stacked" style="color:var(--teal-primary)"></i>
+          Add Inventory Supply
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="closeModal('resourceModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="resourceForm" onsubmit="handleResourceSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="resourceEditId" value="" />
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="form-label">Resource Item Name <span class="required">*</span></label>
+              <input type="text" id="resourceName" class="form-input" placeholder="e.g. Purified Drinking Water (1L bottles)" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category <span class="required">*</span></label>
+              <select id="resourceCategory" class="form-select">
+                <option value="Food">Food</option>
+                <option value="Drinking Water">Drinking Water</option>
+                <option value="Medicines">Medicines</option>
+                <option value="Medical Kits">Medical Kits</option>
+                <option value="Blankets">Blankets</option>
+                <option value="Shelter Equipment">Shelter Equipment</option>
+                <option value="Other Essentials">Other Essentials</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit of Measurement <span class="required">*</span></label>
+              <input type="text" id="resourceUnit" class="form-input" placeholder="packets, bottles, kits, units" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Available Stock Quantity <span class="required">*</span></label>
+              <input type="number" id="resourceQuantity" min="0" class="form-input" placeholder="e.g. 1500" required />
+              <span class="form-hint">Inventory quantity cannot be negative.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Storage Warehouse / Depot <span class="required">*</span></label>
+              <input type="text" id="resourceLocation" class="form-input" placeholder="e.g. Central Warehouse Kochi" required />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('resourceModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Inventory</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 4. VOLUNTEER MODAL -->
+  <div id="volunteerModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="volunteerModalTitle" class="modal-title">
+          <i class="fa-solid fa-user-plus" style="color:var(--teal-primary)"></i>
+          Register Emergency Volunteer
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="closeModal('volunteerModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="volunteerForm" onsubmit="handleVolunteerSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="volunteerEditId" value="" />
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="form-label">Volunteer Full Name <span class="required">*</span></label>
+              <input type="text" id="volunteerName" class="form-input" placeholder="e.g. Dr. Rohan Mehra" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Phone (10 digits) <span class="required">*</span></label>
+              <input type="tel" id="volunteerContact" maxlength="10" class="form-input" placeholder="e.g. 9823011221" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Availability Status <span class="required">*</span></label>
+              <select id="volunteerAvailability" class="form-select">
+                <option value="Available">Available (Ready for Dispatch)</option>
+                <option value="Busy">Busy (Currently Deployed)</option>
+                <option value="Unavailable">Unavailable (Leave / Off-duty)</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label class="form-label">Skillset / Task Specialization <span class="required">*</span></label>
+              <input type="text" id="volunteerTask" class="form-input" placeholder="e.g. Emergency Triage, 4x4 Off-Road Transport, Boat Pilot..." required />
+            </div>
+            <div class="form-group full-width">
+              <label class="form-label">Assigned Area</label>
+              <select id="volunteerAreaSelect" class="form-select">
+                <option value="None">None (Unassigned)</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('volunteerModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Volunteer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 5. SUPPLY ALLOCATION MODAL -->
+  <div id="allocationModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fa-solid fa-truck-fast" style="color:var(--emergency-orange)"></i>
+          Execute Supply Allocation Dispatch
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="closeModal('allocationModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="allocationForm" onsubmit="handleAllocationSubmit(event)">
+        <div class="modal-body">
+          <!-- Allocation Guidance -->
+          <div style="background:#F0FDFA; border:1px solid #99F6E4; border-radius:6px; padding:0.65rem 0.85rem; margin-bottom:1rem; font-size:0.75rem; color:#0F766E;">
+            <strong>Inventory Safeguard:</strong> Allocation quantity will be automatically deducted from warehouse inventory. Allocation quantity cannot exceed available stock.
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="form-label">Link to Pending Relief Request</label>
+              <select id="allocRequestSelect" class="form-select" onchange="onAllocRequestChosen()">
+                <option value="">-- Choose Relief Request --</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Target Disaster Zone <span class="required">*</span></label>
+              <select id="allocAreaSelect" class="form-select" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Select Warehouse Supply <span class="required">*</span></label>
+              <select id="allocResourceSelect" class="form-select" onchange="updateAllocStockDisplay()" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <!-- Available Stock Display Banner -->
+            <div id="allocStockBanner" class="form-group full-width" style="display:none; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:0.6rem 0.85rem; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.76rem; color:#475569;">Currently Available in Depot:</span>
+              <strong id="allocStockValue" style="font-size:1rem; color:var(--teal-primary);">0 units</strong>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Dispatch Quantity <span class="required">*</span></label>
+              <input type="number" id="allocQuantity" min="1" class="form-input" placeholder="Quantity to dispatch" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Assign Available Volunteer</label>
+              <select id="allocVolunteerSelect" class="form-select">
+                <option value="">-- General Logistics Team --</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">Dispatch Instructions / Notes</label>
+              <textarea id="allocNotes" rows="2" class="form-textarea" placeholder="Convoy escort instructions, receiving camp contact..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('allocationModal')">Cancel</button>
+          <button type="submit" class="btn btn-orange">Confirm &amp; Dispatch Supplies</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 6. GENERIC CONFIRMATION DIALOG -->
+  <div id="confirmModal" class="modal-overlay">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-header">
+        <h3 id="confirmTitle" class="modal-title">
+          <i class="fa-solid fa-triangle-exclamation" style="color:var(--emergency-red)"></i>
+          Confirm Action
+        </h3>
+        <button type="button" class="modal-close-btn" onclick="closeModal('confirmModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage" style="font-size:0.88rem; color:var(--text-body); line-height:1.4;">
+          Are you sure you want to proceed?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
+        <button type="button" id="confirmActionBtn" class="btn btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ANDROID MOBILE BOTTOM NAVIGATION -->
+  <nav class="android-bottom-nav">
+    <button type="button" class="android-nav-btn active" data-target="sec-dashboard" onclick="switchSection('sec-dashboard')">
+      <i class="fa-solid fa-gauge-high"></i>
+      <span>Command</span>
+    </button>
+    <button type="button" class="android-nav-btn" data-target="sec-disasters" onclick="switchSection('sec-disasters')">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <span>Disasters</span>
+    </button>
+    <button type="button" class="android-nav-btn" data-target="sec-requests" onclick="switchSection('sec-requests')">
+      <i class="fa-solid fa-hand-holding-hand"></i>
+      <span>Requests</span>
+    </button>
+    <button type="button" class="android-nav-btn" data-target="sec-inventory" onclick="switchSection('sec-inventory')">
+      <i class="fa-solid fa-boxes-stacked"></i>
+      <span>Stock</span>
+    </button>
+    <button type="button" class="android-nav-btn" data-target="sec-allocations" onclick="switchSection('sec-allocations')">
+      <i class="fa-solid fa-truck-fast"></i>
+      <span>Dispatch</span>
+    </button>
+  </nav>
+
+  <!-- ANDROID FLOATING ACTION BUTTON (FAB) -->
+  <button type="button" class="android-fab" onclick="openRequestModal()" title="Quick Request" aria-label="New Relief Request">
+    <i class="fa-solid fa-plus"></i>
+  </button>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- SCRIPT -->
+  <script src="script.js"></script>
+</body>
 </html>

@@ -8,7 +8,7 @@
 - 💻 **GitHub Repository:** [https://github.com/golukumargsr-create/resqnet-disaster-relief](https://github.com/golukumargsr-create/resqnet-disaster-relief)
 - 🚀 **Local Dev Server:** [http://localhost:5173/](http://localhost:5173/)
 
-ResQNet is a specialized, responsive, web-based emergency management command center designed to centralize and coordinate disaster relief operations. Developed for academic evaluation in Internet Programming, it demonstrates practical concepts of **HTML, CSS, JavaScript, and React with Vite**, operating fully independently in the browser using client-side **`localStorage`**.
+ResQNet is a specialized, responsive, web-based emergency management command center designed to centralize and coordinate disaster relief operations. Developed for academic evaluation in Internet Programming, it demonstrates practical concepts of **pure HTML5, CSS3, and Vanilla JavaScript**, operating fully independently in the browser using client-side **`localStorage`** without any external frameworks or complex dependencies.
 
 ---
 
