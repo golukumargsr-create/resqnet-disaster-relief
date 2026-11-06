@@ -1968,6 +1968,33 @@ function fallbackCopy(number, serviceName) {
   showToast('info', 'Helpline Copied', `${serviceName} (${number}) copied to clipboard.`);
 }
 
+function triggerAndroidSOSShare() {
+  const portalUrl = window.location.href;
+  const distressText = `🚨 [ResQNet EMERGENCY SOS DISASTER BROADCAST]\nImmediate disaster relief coordination activated.\n\n📞 24x7 Official Helplines:\n• National Emergency: 112\n• NDMA Disaster Helpline: 1078\n• Emergency Ambulance: 108\n• State EOC Control: 1070\n\nAccess Live ResQNet Disaster Command Portal:\n${portalUrl}`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'ResQNet – Disaster Emergency SOS Broadcast',
+      text: distressText,
+      url: portalUrl
+    }).then(() => {
+      showToast('success', 'SOS Broadcast Shared', 'Distress details shared successfully.');
+    }).catch((err) => {
+      if (err.name !== 'AbortError') {
+        copyHelplineNumber('112', 'SOS Distress Alert Details');
+      }
+    });
+  } else {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(distressText).then(() => {
+        showToast('info', 'SOS Alert Copied', 'Full distress bulletin copied to clipboard. Ready to paste in WhatsApp/SMS.');
+      });
+    } else {
+      copyHelplineNumber('112', 'National Emergency 112');
+    }
+  }
+}
+
 // DOMContentLoaded Entrypoint
 document.addEventListener('DOMContentLoaded', () => {
   initStorage();

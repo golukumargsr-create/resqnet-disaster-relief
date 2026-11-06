@@ -1066,6 +1066,10 @@ body {
   max-width: 880px;
 }
 
+.android-sheet-handle {
+  display: none;
+}
+
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(12px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -1934,7 +1938,7 @@ body {
   }
 
   .content-viewport {
-    padding: 1rem 0.85rem 90px 0.85rem;
+    padding: 1rem 0.85rem calc(96px + env(safe-area-inset-bottom, 0px)) 0.85rem;
   }
 
   /* Sidebar Drawer on Mobile */
@@ -1956,17 +1960,20 @@ body {
     display: none;
   }
 
-  /* Android Bottom Navigation */
+  /* Android Bottom Navigation (Material 3 Adaptive Bar) */
   .android-bottom-nav {
     display: flex;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 62px;
-    background: #FFFFFF;
-    border-top: 1px solid #E2E8F0;
-    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.08);
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 -3px 16px rgba(0, 0, 0, 0.08);
     z-index: 100;
     justify-content: space-around;
     align-items: center;
@@ -1984,37 +1991,63 @@ body {
     color: #64748B;
     cursor: pointer;
     font-size: 0.68rem;
-    font-weight: 600;
-    gap: 3px;
+    font-weight: 500;
+    gap: 2px;
     text-decoration: none;
+    padding: 4px 0;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .android-nav-btn i {
-    font-size: 1.1rem;
+  .nav-icon-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 28px;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .android-nav-btn.active {
+  .android-nav-btn.active .nav-icon-pill {
+    background: rgba(13, 148, 136, 0.16);
     color: var(--teal-primary);
   }
 
-  /* Android Floating Action Button */
+  .android-nav-btn.active {
+    color: var(--navy-dark);
+    font-weight: 700;
+  }
+
+  .android-nav-btn:active {
+    transform: scale(0.92);
+  }
+
+  /* Android Floating Action Button (Material 3 Elevation) */
   .android-fab {
     display: flex;
     position: fixed;
-    bottom: 74px;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
     right: 18px;
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    background: var(--emergency-orange);
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
     color: #FFFFFF;
     border: none;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.45);
+    box-shadow: 0 4px 18px rgba(249, 115, 22, 0.45);
     z-index: 90;
     cursor: pointer;
-    font-size: 1.3rem;
+    font-size: 1.35rem;
+    transition: var(--transition);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .android-fab:active {
+    transform: scale(0.92);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
   }
 
   /* Bottom sheet style modals on mobile */
@@ -2024,16 +2057,64 @@ body {
   }
 
   .modal-dialog {
-    border-radius: 20px 20px 0 0;
+    border-radius: 24px 24px 0 0;
     max-width: 100% !important;
     width: 100%;
-    max-height: 85vh;
-    animation: androidSheetSlideUp 0.22s ease-out;
+    max-height: 86vh;
+    animation: androidSheetSlideUp 0.24s cubic-bezier(0.2, 0.9, 0.3, 1);
+  }
+
+  /* Android Bottom Sheet Drag Handle */
+  .android-sheet-handle {
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: #CBD5E1;
+    border-radius: 9999px;
+    margin: 8px auto 4px auto;
+    flex-shrink: 0;
   }
 
   @keyframes androidSheetSlideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+    from { transform: translateY(100%); opacity: 0.5; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Android SOS Broadcast Bar on Mobile */
+  .android-sos-broadcast-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+    border: 1px solid #FDBA74;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0.85rem;
+    margin-bottom: 1rem;
+  }
+  .android-sos-broadcast-bar .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .broadcast-info {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .broadcast-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #F97316;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
   }
 
   .form-grid {

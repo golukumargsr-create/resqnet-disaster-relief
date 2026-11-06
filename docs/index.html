@@ -5,11 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>ResQNet – Disaster Relief Resource Coordination Platform</title>
 
-  <!-- Mobile / Android Theming -->
+  <!-- Mobile / Android Theming & Progressive Web App -->
   <meta name="theme-color" content="#0A192F" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="application-name" content="ResQNet" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%230A192F'%3E%3Crect width='512' height='512' rx='128' fill='%230A192F'/%3E%3Cpath d='M256 64L416 136V248C416 352 344 424 256 448C168 424 96 352 96 248V136L256 64Z' fill='%230D9488'/%3E%3Cpath d='M256 160V352M160 256H352' stroke='%23FFFFFF' stroke-width='40' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%230A192F'%3E%3Crect width='512' height='512' rx='128' fill='%230A192F'/%3E%3Cpath d='M256 64L416 136V248C416 352 344 424 256 448C168 424 96 352 96 248V136L256 64Z' fill='%230D9488'/%3E%3Cpath d='M256 160V352M160 256H352' stroke='%23FFFFFF' stroke-width='40' stroke-linecap='round'/%3E%3C/svg%3E" />
 
   <!-- Font Awesome 6 Icons CDN (Prof-friendly, universal, no npm build required) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -917,6 +922,7 @@
   <!-- 1. DISASTER REPORT MODAL -->
   <div id="disasterModal" class="modal-overlay">
     <div class="modal-dialog">
+      <div class="android-sheet-handle"></div>
       <div class="modal-header">
         <h3 id="disasterModalTitle" class="modal-title">
           <i class="fa-solid fa-triangle-exclamation" style="color:var(--emergency-orange)"></i>
@@ -961,7 +967,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">Estimated Affected Population <span class="required">*</span></label>
-              <input type="number" id="disasterPopulation" min="1" class="form-input" placeholder="e.g. 25000" required />
+              <input type="number" id="disasterPopulation" min="1" inputmode="numeric" class="form-input" placeholder="e.g. 25000" required />
             </div>
             <div class="form-group">
               <label class="form-label">Zone Status</label>
@@ -989,6 +995,7 @@
   <!-- 2. RELIEF REQUEST MODAL -->
   <div id="requestModal" class="modal-overlay">
     <div class="modal-dialog">
+      <div class="android-sheet-handle"></div>
       <div class="modal-header">
         <h3 id="requestModalTitle" class="modal-title">
           <i class="fa-solid fa-hand-holding-hand" style="color:var(--teal-primary)"></i>
@@ -1014,7 +1021,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">Quantity Required <span class="required">*</span></label>
-              <input type="number" id="requestQuantity" min="1" class="form-input" placeholder="e.g. 500" required />
+              <input type="number" id="requestQuantity" min="1" inputmode="numeric" class="form-input" placeholder="e.g. 500" required />
             </div>
             <div class="form-group">
               <label class="form-label">Priority Urgency <span class="required">*</span></label>
@@ -1039,7 +1046,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">Contact Phone (10 digits) <span class="required">*</span></label>
-              <input type="tel" id="requestContactNumber" maxlength="10" class="form-input" placeholder="e.g. 9876543210" required />
+              <input type="tel" id="requestContactNumber" maxlength="10" inputmode="tel" autocomplete="tel" class="form-input" placeholder="e.g. 9876543210" required />
             </div>
             <div class="form-group full-width">
               <label class="form-label">Emergency Situation Notes</label>
@@ -1059,6 +1066,7 @@
   <!-- 3. RESOURCE INVENTORY MODAL -->
   <div id="resourceModal" class="modal-overlay">
     <div class="modal-dialog">
+      <div class="android-sheet-handle"></div>
       <div class="modal-header">
         <h3 id="resourceModalTitle" class="modal-title">
           <i class="fa-solid fa-boxes-stacked" style="color:var(--teal-primary)"></i>
@@ -1092,7 +1100,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">Available Stock Quantity <span class="required">*</span></label>
-              <input type="number" id="resourceQuantity" min="0" class="form-input" placeholder="e.g. 1500" required />
+              <input type="number" id="resourceQuantity" min="0" inputmode="numeric" class="form-input" placeholder="e.g. 1500" required />
               <span class="form-hint">Inventory quantity cannot be negative.</span>
             </div>
             <div class="form-group">
@@ -1113,6 +1121,7 @@
   <!-- 4. VOLUNTEER MODAL -->
   <div id="volunteerModal" class="modal-overlay">
     <div class="modal-dialog">
+      <div class="android-sheet-handle"></div>
       <div class="modal-header">
         <h3 id="volunteerModalTitle" class="modal-title">
           <i class="fa-solid fa-user-plus" style="color:var(--teal-primary)"></i>
@@ -1130,7 +1139,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">Contact Phone (10 digits) <span class="required">*</span></label>
-              <input type="tel" id="volunteerContact" maxlength="10" class="form-input" placeholder="e.g. 9823011221" required />
+              <input type="tel" id="volunteerContact" maxlength="10" inputmode="tel" autocomplete="tel" class="form-input" placeholder="e.g. 9823011221" required />
             </div>
             <div class="form-group">
               <label class="form-label">Availability Status <span class="required">*</span></label>
@@ -1165,6 +1174,7 @@
   <!-- 5. SUPPLY ALLOCATION MODAL -->
   <div id="allocationModal" class="modal-overlay">
     <div class="modal-dialog">
+      <div class="android-sheet-handle"></div>
       <div class="modal-header">
         <h3 class="modal-title">
           <i class="fa-solid fa-truck-fast" style="color:var(--emergency-orange)"></i>
@@ -1210,7 +1220,7 @@
 
             <div class="form-group">
               <label class="form-label">Dispatch Quantity <span class="required">*</span></label>
-              <input type="number" id="allocQuantity" min="1" class="form-input" placeholder="Quantity to dispatch" required />
+              <input type="number" id="allocQuantity" min="1" inputmode="numeric" class="form-input" placeholder="Quantity to dispatch" required />
             </div>
 
             <div class="form-group">
@@ -1239,6 +1249,7 @@
   <!-- 6. GENERIC CONFIRMATION DIALOG -->
   <div id="confirmModal" class="modal-overlay">
     <div class="modal-dialog modal-sm">
+      <div class="android-sheet-handle"></div>
       <div class="modal-header">
         <h3 id="confirmTitle" class="modal-title">
           <i class="fa-solid fa-triangle-exclamation" style="color:var(--emergency-red)"></i>
@@ -1262,6 +1273,7 @@
   <!-- 7. EMERGENCY HELPLINES & DISASTER SOS DIRECTORY MODAL -->
   <div id="helplineModal" class="modal-overlay">
     <div class="modal-dialog modal-lg">
+      <div class="android-sheet-handle"></div>
       <div class="modal-header" style="background:linear-gradient(135deg, #10243A 0%, #1E293B 100%); color:#FFFFFF; border-bottom:1px solid rgba(255,255,255,0.1);">
         <div>
           <div style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#FCA5A5; padding:0.2rem 0.55rem; border-radius:9999px; font-size:0.7rem; font-weight:700; letter-spacing:0.04em;">
@@ -1278,6 +1290,21 @@
       </div>
 
       <div class="modal-body" style="padding:1.25rem; max-height:72vh; overflow-y:auto;">
+        <!-- Android Quick SOS Share Bar -->
+        <div class="android-sos-broadcast-bar">
+          <div class="broadcast-info">
+            <div class="broadcast-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+            <div>
+              <strong>Android Emergency Distress Broadcast</strong>
+              <div style="font-size:0.72rem; color:#64748B;">Broadcast coordinates &amp; toll-free numbers via WhatsApp, SMS, or Telegram</div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-orange btn-sm" onclick="triggerAndroidSOSShare()">
+            <i class="fa-solid fa-share-nodes"></i>
+            <span>Share SOS Alert</span>
+          </button>
+        </div>
+
         <!-- Emergency Network Notice -->
         <div class="helpline-notice-box">
           <i class="fa-solid fa-shield-heart"></i>
@@ -1537,26 +1564,26 @@
   </div>
 
 
-  <!-- ANDROID MOBILE BOTTOM NAVIGATION -->
+  <!-- ANDROID MOBILE BOTTOM NAVIGATION (Material 3 Adaptive Bar) -->
   <nav class="android-bottom-nav">
     <button type="button" class="android-nav-btn active" data-target="sec-dashboard" onclick="switchSection('sec-dashboard')">
-      <i class="fa-solid fa-gauge-high"></i>
+      <div class="nav-icon-pill"><i class="fa-solid fa-gauge-high"></i></div>
       <span>Command</span>
     </button>
     <button type="button" class="android-nav-btn" data-target="sec-disasters" onclick="switchSection('sec-disasters')">
-      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div class="nav-icon-pill"><i class="fa-solid fa-triangle-exclamation"></i></div>
       <span>Disasters</span>
     </button>
     <button type="button" class="android-nav-btn" data-target="sec-requests" onclick="switchSection('sec-requests')">
-      <i class="fa-solid fa-hand-holding-hand"></i>
+      <div class="nav-icon-pill"><i class="fa-solid fa-hand-holding-hand"></i></div>
       <span>Requests</span>
     </button>
     <button type="button" class="android-nav-btn" data-target="sec-inventory" onclick="switchSection('sec-inventory')">
-      <i class="fa-solid fa-boxes-stacked"></i>
+      <div class="nav-icon-pill"><i class="fa-solid fa-boxes-stacked"></i></div>
       <span>Stock</span>
     </button>
     <button type="button" class="android-nav-btn" data-target="sec-allocations" onclick="switchSection('sec-allocations')">
-      <i class="fa-solid fa-truck-fast"></i>
+      <div class="nav-icon-pill"><i class="fa-solid fa-truck-fast"></i></div>
       <span>Dispatch</span>
     </button>
   </nav>
