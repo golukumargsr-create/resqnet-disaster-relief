@@ -709,6 +709,24 @@ function renderDashboard() {
   document.getElementById('dashBlanketUnits').textContent = blanketQty.toLocaleString();
   document.getElementById('dashShelterUnits').textContent = shelterQty.toLocaleString();
 
+  // Update Profile Screen Stats
+  const profD = document.getElementById('profDisasterCount');
+  if (profD) profD.textContent = disasters.length;
+  const profR = document.getElementById('profRequestCount');
+  if (profR) profR.textContent = requests.length;
+  const profV = document.getElementById('profVolunteerCount');
+  if (profV) profV.textContent = busyVolunteers;
+  const profS = document.getElementById('profResourceCount');
+  if (profS) profS.textContent = totalUnits.toLocaleString();
+
+  // Update Notification Badge Dot
+  const notifDot = document.getElementById('notifBadgeDot');
+  if (notifDot) {
+    const unread = requests.filter(r => r.priority === 'Critical' && r.status === 'Pending').length + disasters.filter(d => d.severity === 'Critical').length;
+    notifDot.textContent = unread || 1;
+    notifDot.style.display = unread > 0 ? 'flex' : 'none';
+  }
+
   // Priority Bars
   const totalReqCount = requests.length || 1;
   const critCount = requests.filter(r => r.priority === 'Critical').length;
@@ -1993,6 +2011,108 @@ function triggerAndroidSOSShare() {
       copyHelplineNumber('112', 'National Emergency 112');
     }
   }
+}
+
+function setDisasterTypeChip(type, chipElement) {
+  const select = document.getElementById('disasterTypeFilter');
+  if (select) select.value = type;
+  document.querySelectorAll('#sec-disasters .m3-filter-chip').forEach(c => c.classList.remove('active'));
+  if (chipElement) chipElement.classList.add('active');
+  renderDisastersTable();
+}
+
+function setRequestPriorityChip(priority, chipElement) {
+  const select = document.getElementById('requestPriorityFilter');
+  if (select) select.value = priority;
+  document.querySelectorAll('#sec-requests .m3-filter-chip').forEach(c => c.classList.remove('active'));
+  if (chipElement) chipElement.classList.add('active');
+  renderRequestsTable();
+}
+
+function openNotificationsModal() {
+  renderNotifications();
+  openModal('notificationsModal');
+}
+
+function clearNotificationBadge() {
+  const dot = document.getElementById('notifBadgeDot');
+  if (dot) dot.style.display = 'none';
+  showToast('info', 'Alerts Dismissed', 'All live notifications marked as reviewed.');
+  closeModal('notificationsModal');
+}
+
+function renderNotifications() {
+  const container = document.getElementById('notificationsList');
+  if (!container) return;
+
+  const requests = getData(STORAGE_KEYS.REQUESTS, []);
+  const disasters = getData(STORAGE_KEYS.DISASTERS, []);
+  const resources = getData(STORAGE_KEYS.RESOURCES, []);
+
+  const criticalReqs = requests.filter(r => r.priority === 'Critical' && r.status === 'Pending');
+  const activeDisasters = disasters.filter(d => d.severity === 'Critical');
+  const lowStock = resources.filter(r => Number(r.quantity) < 100);
+
+  let notifs = [];
+
+  criticalReqs.forEach(r => {
+    notifs.push({
+      type: 'critical',
+      icon: 'fa-solid fa-triangle-exclamation',
+      color: 'var(--emergency-red)',
+      bg: '#FEE2E2',
+      title: `Critical Relief Request: ${r.id}`,
+      msg: `${r.area} urgently requires ${r.quantity} units of ${r.resource}.`,
+      time: 'Just now'
+    });
+  });
+
+  activeDisasters.forEach(d => {
+    notifs.push({
+      type: 'warning',
+      icon: 'fa-solid fa-cloud-bolt',
+      color: 'var(--emergency-orange)',
+      bg: '#FEF3C7',
+      title: `High Hazard Alert: ${d.name}`,
+      msg: `${d.type} incident reported in ${d.district}, ${d.state}. Evacuation assistance requested.`,
+      time: '12m ago'
+    });
+  });
+
+  lowStock.forEach(s => {
+    notifs.push({
+      type: 'info',
+      icon: 'fa-solid fa-boxes-stacked',
+      color: '#2563EB',
+      bg: '#EFF6FF',
+      title: `Depot Stock Warning: ${s.name}`,
+      msg: `Only ${s.quantity} ${s.unit} remaining in ${s.location}. Requisition recommended.`,
+      time: '1h ago'
+    });
+  });
+
+  if (notifs.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:2rem 1rem; color:#64748B;">
+        <i class="fa-solid fa-circle-check" style="color:#10B981; font-size:1.5rem; margin-bottom:0.5rem; display:block;"></i>
+        All clear. No unresolved critical alerts or emergency warnings at this time.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = notifs.map(n => `
+    <div class="notification-card notif-${n.type}">
+      <div class="notif-icon-box" style="background:${n.bg}; color:${n.color};">
+        <i class="${n.icon}"></i>
+      </div>
+      <div class="notif-body">
+        <div class="notif-title">${escapeHTML(n.title)}</div>
+        <div class="notif-msg">${escapeHTML(n.msg)}</div>
+        <div class="notif-time"><i class="fa-regular fa-clock"></i> ${n.time}</div>
+      </div>
+    </div>
+  `).join('');
 }
 
 // DOMContentLoaded Entrypoint

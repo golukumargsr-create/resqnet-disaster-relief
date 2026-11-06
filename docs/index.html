@@ -126,13 +126,20 @@
     <!-- MAIN VIEW WRAPPER -->
     <div class="main-wrapper">
 
-      <!-- TOP APP HEADER -->
+      <!-- TOP APP HEADER (Material 3 Top App Bar) -->
       <header class="top-navbar">
         <div class="navbar-left">
           <button type="button" class="mobile-menu-toggle" onclick="toggleMobileSidebar(true)" aria-label="Open menu">
             <i class="fa-solid fa-bars"></i>
           </button>
-          <div class="page-header-info">
+          <div class="brand-mobile-box" onclick="switchSection('sec-dashboard')">
+            <div class="brand-mobile-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="brand-mobile-text">
+              <span class="brand-mobile-name">ResQNet</span>
+              <span class="brand-mobile-badge">COMMAND</span>
+            </div>
+          </div>
+          <div class="page-header-info desktop-only-header">
             <h1 id="pageTitle" class="current-page-title">
               <i class="fa-solid fa-gauge-high" style="color:var(--teal-primary)"></i>
               Disaster Relief Command Dashboard
@@ -149,7 +156,14 @@
             <span class="sos-text">SOS Helplines</span>
             <span class="sos-pill-badge">112</span>
           </button>
-          <div class="live-status-pill">
+          <button type="button" class="topbar-icon-btn" onclick="openNotificationsModal()" title="Live Emergency Alerts" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span id="notifBadgeDot" class="topbar-badge-dot">3</span>
+          </button>
+          <button type="button" class="topbar-avatar-btn" onclick="switchSection('sec-about')" title="Officer Profile" aria-label="Profile">
+            CO
+          </button>
+          <div class="live-status-pill desktop-only-pill">
             <span class="pulse-indicator"></span>
             <span>SYSTEM LIVE</span>
           </div>
@@ -163,6 +177,31 @@
              1. DASHBOARD SECTION
              ======================================================== -->
         <section id="sec-dashboard" class="app-section active-section">
+          <!-- Android Welcome & Status Header Card (Material 3) -->
+          <div class="android-welcome-card">
+            <div class="welcome-user-meta">
+              <div class="welcome-avatar-circle">CO</div>
+              <div class="welcome-text-block">
+                <div class="welcome-eyebrow">
+                  <span class="live-blink-dot"></span>
+                  <span>NATIONAL DISASTER RESPONSE ACTIVE</span>
+                </div>
+                <h2 class="welcome-officer-name">Welcome, Commander Verma</h2>
+                <div class="welcome-officer-role">Chief Relief Coordinator &bull; Operations Center #4</div>
+              </div>
+            </div>
+            <div class="welcome-quick-pills">
+              <button type="button" class="m3-action-chip chip-orange" onclick="openDisasterModal()">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Report Incident</span>
+              </button>
+              <button type="button" class="m3-action-chip chip-teal" onclick="openRequestModal()">
+                <i class="fa-solid fa-plus"></i>
+                <span>Create Request</span>
+              </button>
+            </div>
+          </div>
+
           <!-- Hero Emergency Overview Banner -->
           <div class="emergency-hero-banner">
             <div class="hero-banner-content">
@@ -508,6 +547,16 @@
               </div>
             </div>
 
+            <!-- Material 3 Horizontal Filter Chips (Touch Friendly) -->
+            <div class="m3-filter-chips-wrapper">
+              <span class="m3-chips-label"><i class="fa-solid fa-filter"></i> Type:</span>
+              <button type="button" class="m3-filter-chip active" data-filter="All" onclick="setDisasterTypeChip('All', this)">All Incidents</button>
+              <button type="button" class="m3-filter-chip" data-filter="Flood" onclick="setDisasterTypeChip('Flood', this)"><i class="fa-solid fa-water"></i> Flood</button>
+              <button type="button" class="m3-filter-chip" data-filter="Cyclone" onclick="setDisasterTypeChip('Cyclone', this)"><i class="fa-solid fa-wind"></i> Cyclone</button>
+              <button type="button" class="m3-filter-chip" data-filter="Landslide" onclick="setDisasterTypeChip('Landslide', this)"><i class="fa-solid fa-mountain"></i> Landslide</button>
+              <button type="button" class="m3-filter-chip" data-filter="Earthquake" onclick="setDisasterTypeChip('Earthquake', this)"><i class="fa-solid fa-house-crack"></i> Earthquake</button>
+            </div>
+
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
@@ -564,6 +613,16 @@
                   <span>New Relief Request</span>
                 </button>
               </div>
+            </div>
+
+            <!-- Material 3 Horizontal Priority Chips -->
+            <div class="m3-filter-chips-wrapper">
+              <span class="m3-chips-label"><i class="fa-solid fa-flag"></i> Priority:</span>
+              <button type="button" class="m3-filter-chip active" data-filter="All" onclick="setRequestPriorityChip('All', this)">All</button>
+              <button type="button" class="m3-filter-chip chip-critical" data-filter="Critical" onclick="setRequestPriorityChip('Critical', this)">🔴 Critical</button>
+              <button type="button" class="m3-filter-chip chip-high" data-filter="High" onclick="setRequestPriorityChip('High', this)">🟠 High</button>
+              <button type="button" class="m3-filter-chip chip-medium" data-filter="Medium" onclick="setRequestPriorityChip('Medium', this)">🟡 Medium</button>
+              <button type="button" class="m3-filter-chip chip-low" data-filter="Low" onclick="setRequestPriorityChip('Low', this)">🟢 Low</button>
             </div>
 
             <div class="table-responsive">
@@ -821,9 +880,48 @@
 
 
         <!-- ========================================================
-             8. ABOUT PLATFORM & SYSTEM CONTROLS
+             8. ABOUT PLATFORM & SYSTEM CONTROLS (Profile Section)
              ======================================================== -->
         <section id="sec-about" class="app-section">
+          <!-- Officer Profile Hero Card (Material 3 Profile View) -->
+          <div class="card officer-profile-hero-card">
+            <div class="profile-hero-header">
+              <div class="profile-hero-avatar">CO</div>
+              <div class="profile-hero-info">
+                <div class="profile-hero-badge"><i class="fa-solid fa-shield-halved"></i> CHIEF RELIEF COORDINATOR</div>
+                <h2 class="profile-hero-name">Commander Rajesh Verma</h2>
+                <div class="profile-hero-meta">
+                  <span><i class="fa-solid fa-building-flag"></i> National Disaster Management Authority</span>
+                  <span>&bull;</span>
+                  <span><i class="fa-solid fa-id-card"></i> ID: NDMA-CMD-044</span>
+                </div>
+              </div>
+              <div class="profile-duty-status">
+                <span class="duty-dot"></span>
+                <span>ON ACTIVE COMMAND DUTY</span>
+              </div>
+            </div>
+
+            <div class="profile-stats-bar">
+              <div class="profile-stat-box">
+                <span id="profDisasterCount" class="stat-num">0</span>
+                <span class="stat-tag">Active Incidents</span>
+              </div>
+              <div class="profile-stat-box">
+                <span id="profRequestCount" class="stat-num">0</span>
+                <span class="stat-tag">Relief Requests</span>
+              </div>
+              <div class="profile-stat-box">
+                <span id="profVolunteerCount" class="stat-num">0</span>
+                <span class="stat-tag">Active Volunteers</span>
+              </div>
+              <div class="profile-stat-box">
+                <span id="profResourceCount" class="stat-num">0</span>
+                <span class="stat-tag">Depot Supplies</span>
+              </div>
+            </div>
+          </div>
+
           <div class="card" style="padding:1.75rem; border-left: 4px solid var(--teal-primary); margin-bottom: 1.5rem;">
             <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
               <div class="brand-icon-box" style="width:42px; height:42px; font-size:1.25rem;">
@@ -1564,11 +1662,38 @@
   </div>
 
 
+  <!-- 8. NOTIFICATIONS & LIVE INCIDENT ALERTS BOTTOM SHEET -->
+  <div id="notificationsModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="android-sheet-handle"></div>
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">
+            <i class="fa-solid fa-bell" style="color:var(--emergency-orange)"></i>
+            Live Incident Alerts &amp; Notifications
+          </h3>
+          <p style="font-size:0.75rem; color:#64748B; margin-top:2px;">Real-time critical requests and emergency dispatch updates</p>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeModal('notificationsModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding:1rem; max-height:70vh; overflow-y:auto;">
+        <div id="notificationsList" class="notifications-list">
+          <!-- Rendered dynamically by script.js -->
+        </div>
+      </div>
+      <div class="modal-footer" style="background:#F8FAFC;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="clearNotificationBadge()">Mark all as read</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('notificationsModal')">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+
   <!-- ANDROID MOBILE BOTTOM NAVIGATION (Material 3 Adaptive Bar) -->
   <nav class="android-bottom-nav">
     <button type="button" class="android-nav-btn active" data-target="sec-dashboard" onclick="switchSection('sec-dashboard')">
-      <div class="nav-icon-pill"><i class="fa-solid fa-gauge-high"></i></div>
-      <span>Command</span>
+      <div class="nav-icon-pill"><i class="fa-solid fa-house"></i></div>
+      <span>Home</span>
     </button>
     <button type="button" class="android-nav-btn" data-target="sec-disasters" onclick="switchSection('sec-disasters')">
       <div class="nav-icon-pill"><i class="fa-solid fa-triangle-exclamation"></i></div>
@@ -1580,11 +1705,11 @@
     </button>
     <button type="button" class="android-nav-btn" data-target="sec-inventory" onclick="switchSection('sec-inventory')">
       <div class="nav-icon-pill"><i class="fa-solid fa-boxes-stacked"></i></div>
-      <span>Stock</span>
+      <span>Resources</span>
     </button>
-    <button type="button" class="android-nav-btn" data-target="sec-allocations" onclick="switchSection('sec-allocations')">
-      <div class="nav-icon-pill"><i class="fa-solid fa-truck-fast"></i></div>
-      <span>Dispatch</span>
+    <button type="button" class="android-nav-btn" data-target="sec-about" onclick="switchSection('sec-about')">
+      <div class="nav-icon-pill"><i class="fa-solid fa-user-shield"></i></div>
+      <span>Profile</span>
     </button>
   </nav>
 
