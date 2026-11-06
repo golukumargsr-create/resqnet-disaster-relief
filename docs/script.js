@@ -633,6 +633,16 @@ function showToast(type, title, message) {
   }, 3500);
 }
 
+function escapeHTML(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // Modal helper
 function openModal(id) {
   document.getElementById(id).classList.add('active');
@@ -1862,6 +1872,100 @@ function renderAll() {
   renderVolunteersTable();
   renderAllocationsTable();
   renderReports();
+  renderCampHelplines();
+}
+
+// ============================================================================
+// 13. EMERGENCY HELPLINE DIRECTORY & CAMP SOS CONTROLLER
+// ============================================================================
+
+function openEmergencyHelplineModal() {
+  renderCampHelplines();
+  openModal('helplineModal');
+}
+
+function renderCampHelplines() {
+  const container = document.getElementById('campHelplinesContainer');
+  if (!container) return;
+
+  const disasters = getData(STORAGE_KEYS.DISASTERS, []);
+  const activeDisasters = disasters.filter(d => d.status === 'Active');
+
+  if (activeDisasters.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:1.5rem; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:8px; font-size:0.8rem; color:#64748B;">
+        <i class="fa-solid fa-circle-check" style="color:#10B981; font-size:1.2rem; margin-bottom:0.4rem; display:block;"></i>
+        All disaster zones currently marked as Resolved or Monitoring. No active critical relief camps required at this moment.
+      </div>
+    `;
+    return;
+  }
+
+  // Pre-configured official emergency field camp coordinators for active zones
+  const sampleOfficers = [
+    { name: 'Dr. Ananya Sharma', phone: '+91 98765 43210', role: 'Camp Relief Lead' },
+    { name: 'Officer Rajesh Nair', phone: '+91 98765 43211', role: 'Field Incident Commander' },
+    { name: 'Sister Mary Thomas', phone: '+91 98765 43212', role: 'Emergency Triage Lead' },
+    { name: 'K. Saravanan', phone: '+91 98765 43213', role: 'Logistics Liaison Officer' },
+    { name: 'Capt. Vikram Patel', phone: '+91 98765 43214', role: 'Evacuation Squad Head' },
+    { name: 'Sunil Barman', phone: '+91 98765 43215', role: 'Island Camp Coordinator' }
+  ];
+
+  container.innerHTML = activeDisasters.map((d, index) => {
+    const officer = sampleOfficers[index % sampleOfficers.length];
+    const cleanPhone = officer.phone.replace(/[^0-9]/g, '');
+
+    return `
+      <div class="camp-helpline-card">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.25rem;">
+            <span class="camp-card-zone">${escapeHTML(d.name)}</span>
+            <span class="badge ${d.severity === 'Critical' ? 'badge-critical' : 'badge-high'}" style="font-size:0.62rem; padding:0.1rem 0.4rem;">${d.severity}</span>
+          </div>
+          <div class="camp-card-loc">
+            <i class="fa-solid fa-location-dot" style="color:var(--emergency-red); margin-right:3px;"></i>
+            ${escapeHTML(d.district)}, ${escapeHTML(d.state)}
+          </div>
+          <div class="camp-card-officer" style="margin-top:0.4rem;">
+            <i class="fa-solid fa-user-shield" style="color:var(--teal-primary)"></i>
+            <strong>${escapeHTML(officer.name)}</strong>
+            <span style="font-size:0.68rem; color:#64748B;">(${officer.role})</span>
+          </div>
+        </div>
+        <div class="camp-card-footer">
+          <a href="tel:${cleanPhone}" class="camp-phone-link" title="Call Field Camp In-Charge">
+            <i class="fa-solid fa-phone"></i>
+            <span>${officer.phone}</span>
+          </a>
+          <button type="button" class="btn btn-copy-helpline" style="padding:0.25rem 0.55rem; font-size:0.7rem;" onclick="copyHelplineNumber('${cleanPhone}', '${escapeHTML(d.name)} Camp')">
+            <i class="fa-regular fa-copy"></i> Copy
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function copyHelplineNumber(number, serviceName) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(number).then(() => {
+      showToast('info', 'Helpline Copied', `${serviceName} (${number}) copied to clipboard.`);
+    }).catch(() => {
+      fallbackCopy(number, serviceName);
+    });
+  } else {
+    fallbackCopy(number, serviceName);
+  }
+}
+
+function fallbackCopy(number, serviceName) {
+  const tempInput = document.createElement('input');
+  tempInput.value = number;
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  document.execCommand('copy');
+  document.body.removeChild(tempInput);
+  showToast('info', 'Helpline Copied', `${serviceName} (${number}) copied to clipboard.`);
 }
 
 // DOMContentLoaded Entrypoint
@@ -1889,3 +1993,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log('✓ ResQNet Emergency Operations System (Vanilla JS) initialized.');
 });
+

@@ -87,6 +87,12 @@
           <span>Allocation Hub</span>
         </button>
 
+        <button type="button" class="nav-link nav-link-sos" onclick="openEmergencyHelplineModal()" style="border: 1px dashed rgba(239, 68, 68, 0.45); background: rgba(239, 68, 68, 0.08); margin-top:0.25rem;">
+          <span class="nav-icon" style="color:var(--emergency-red)"><i class="fa-solid fa-phone-volume"></i></span>
+          <span style="font-weight:600; color:#FCA5A5;">SOS Helplines</span>
+          <span class="nav-badge" style="background:var(--emergency-red); color:#fff; font-weight:700;">24x7</span>
+        </button>
+
         <div class="nav-section-title">Intelligence</div>
 
         <button type="button" class="nav-link" data-target="sec-reports" onclick="switchSection('sec-reports')">
@@ -133,6 +139,11 @@
         </div>
 
         <div class="navbar-right">
+          <button type="button" class="btn-sos-header" onclick="openEmergencyHelplineModal()" title="View Emergency Helplines &amp; SOS Directory">
+            <span class="sos-icon-pulse"><i class="fa-solid fa-phone-volume"></i></span>
+            <span class="sos-text">SOS Helplines</span>
+            <span class="sos-pill-badge">112</span>
+          </button>
           <div class="live-status-pill">
             <span class="pulse-indicator"></span>
             <span>SYSTEM LIVE</span>
@@ -171,6 +182,83 @@
                 <i class="fa-solid fa-truck-fast"></i>
                 <span>Dispatch Supplies</span>
               </button>
+            </div>
+          </div>
+
+          <!-- Emergency Helplines Quick-Dial Bar -->
+          <div class="emergency-quickbar">
+            <div class="quickbar-header">
+              <div class="quickbar-title">
+                <span class="quickbar-badge-live"><i class="fa-solid fa-phone-volume"></i> 24x7 TOLL-FREE</span>
+                <span class="quickbar-main-title">Official Disaster &amp; Emergency Helplines</span>
+                <span class="quickbar-subtitle">(One-tap direct dial on mobile)</span>
+              </div>
+              <button type="button" class="quickbar-all-btn" onclick="openEmergencyHelplineModal()">
+                <i class="fa-solid fa-address-book"></i>
+                <span>Full SOS Directory &amp; Relief Camps</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+            <div class="quickbar-items">
+              <a href="tel:112" class="quick-dial-chip chip-allinone" title="Call All-in-One National Emergency 112">
+                <div class="chip-icon"><i class="fa-solid fa-phone"></i></div>
+                <div class="chip-info">
+                  <span class="chip-tag">National Unified</span>
+                  <strong class="chip-number">112</strong>
+                  <span class="chip-name">Police / Fire / Med</span>
+                </div>
+                <span class="chip-call-arrow"><i class="fa-solid fa-phone-flip"></i></span>
+              </a>
+
+              <a href="tel:1078" class="quick-dial-chip chip-ndma" title="Call NDMA Disaster Relief Helpline 1078">
+                <div class="chip-icon"><i class="fa-solid fa-cloud-bolt"></i></div>
+                <div class="chip-info">
+                  <span class="chip-tag">Disaster Relief</span>
+                  <strong class="chip-number">1078</strong>
+                  <span class="chip-name">NDMA Control</span>
+                </div>
+                <span class="chip-call-arrow"><i class="fa-solid fa-phone-flip"></i></span>
+              </a>
+
+              <a href="tel:108" class="quick-dial-chip chip-ambulance" title="Call Disaster Ambulance 108">
+                <div class="chip-icon"><i class="fa-solid fa-truck-medical"></i></div>
+                <div class="chip-info">
+                  <span class="chip-tag">Medical Emergency</span>
+                  <strong class="chip-number">108</strong>
+                  <span class="chip-name">Disaster Ambulance</span>
+                </div>
+                <span class="chip-call-arrow"><i class="fa-solid fa-phone-flip"></i></span>
+              </a>
+
+              <a href="tel:1070" class="quick-dial-chip chip-seoc" title="Call State Emergency Operations Center 1070">
+                <div class="chip-icon"><i class="fa-solid fa-building-shield"></i></div>
+                <div class="chip-info">
+                  <span class="chip-tag">State EOC</span>
+                  <strong class="chip-number">1070</strong>
+                  <span class="chip-name">Relief Control</span>
+                </div>
+                <span class="chip-call-arrow"><i class="fa-solid fa-phone-flip"></i></span>
+              </a>
+
+              <a href="tel:1077" class="quick-dial-chip chip-deoc" title="Call District Relief Control 1077">
+                <div class="chip-icon"><i class="fa-solid fa-city"></i></div>
+                <div class="chip-info">
+                  <span class="chip-tag">District EOC</span>
+                  <strong class="chip-number">1077</strong>
+                  <span class="chip-name">District Collectorate</span>
+                </div>
+                <span class="chip-call-arrow"><i class="fa-solid fa-phone-flip"></i></span>
+              </a>
+
+              <a href="tel:101" class="quick-dial-chip chip-fire" title="Call Fire &amp; Rescue 101">
+                <div class="chip-icon"><i class="fa-solid fa-fire-extinguisher"></i></div>
+                <div class="chip-info">
+                  <span class="chip-tag">Rescue Team</span>
+                  <strong class="chip-number">101</strong>
+                  <span class="chip-name">Fire &amp; Water Rescue</span>
+                </div>
+                <span class="chip-call-arrow"><i class="fa-solid fa-phone-flip"></i></span>
+              </a>
             </div>
           </div>
 
@@ -804,7 +892,19 @@
 
       <!-- APP FOOTER -->
       <footer class="app-footer">
-        <strong>ResQNet Disaster Relief Coordination System</strong> &bull; Developed for Academic Internet Programming Evaluation &bull; HTML5 &bull; CSS3 &bull; Vanilla JavaScript
+        <div class="footer-inner">
+          <div class="footer-brand-info">
+            <strong>ResQNet Disaster Relief Coordination System</strong> &bull; Developed for Academic Internet Programming Evaluation &bull; HTML5 &bull; CSS3 &bull; Vanilla JavaScript
+          </div>
+          <div class="footer-helpline-tags">
+            <span class="footer-sos-label"><i class="fa-solid fa-phone-volume" style="color:var(--emergency-red)"></i> 24x7 Helplines:</span>
+            <a href="tel:112" class="footer-tel-pill" title="National Emergency"><i class="fa-solid fa-phone"></i> 112 National</a>
+            <a href="tel:1078" class="footer-tel-pill" title="NDMA Disaster Control"><i class="fa-solid fa-cloud-bolt"></i> 1078 NDMA</a>
+            <a href="tel:108" class="footer-tel-pill" title="Disaster Medical Ambulance"><i class="fa-solid fa-truck-medical"></i> 108 Ambulance</a>
+            <a href="tel:1070" class="footer-tel-pill" title="State Emergency Operations Center"><i class="fa-solid fa-building-shield"></i> 1070 SEOC</a>
+            <button type="button" class="footer-more-btn" onclick="openEmergencyHelplineModal()">All Contacts &rarr;</button>
+          </div>
+        </div>
       </footer>
     </div>
   </div>
@@ -1154,6 +1254,284 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
         <button type="button" id="confirmActionBtn" class="btn btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 7. EMERGENCY HELPLINES & DISASTER SOS DIRECTORY MODAL -->
+  <div id="helplineModal" class="modal-overlay">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header" style="background:linear-gradient(135deg, #10243A 0%, #1E293B 100%); color:#FFFFFF; border-bottom:1px solid rgba(255,255,255,0.1);">
+        <div>
+          <div style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#FCA5A5; padding:0.2rem 0.55rem; border-radius:9999px; font-size:0.7rem; font-weight:700; letter-spacing:0.04em;">
+            <i class="fa-solid fa-phone-volume"></i> 24x7 TOLL-FREE DIRECTORY
+          </div>
+          <h3 class="modal-title" style="color:#FFFFFF; margin-top:0.35rem; font-size:1.15rem;">
+            Emergency Helplines &amp; Disaster Control Centers
+          </h3>
+          <p style="font-size:0.75rem; color:#94A3B8; margin-top:2px;">
+            One-tap call access for national emergency response, medical evacuation, and active field camp control rooms
+          </p>
+        </div>
+        <button type="button" class="modal-close-btn" style="color:#CBD5E1;" onclick="closeModal('helplineModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body" style="padding:1.25rem; max-height:72vh; overflow-y:auto;">
+        <!-- Emergency Network Notice -->
+        <div class="helpline-notice-box">
+          <i class="fa-solid fa-shield-heart"></i>
+          <div>
+            <strong>Instant Telecommunications Protocol:</strong> All statutory emergency numbers are toll-free and accessible 24 hours a day, 7 days a week, without telephone balance or network lock. On smartphones, tap <strong>"Call Now"</strong> to launch your phone dialer directly.
+          </div>
+        </div>
+
+        <!-- Section 1: National Statutory Helplines -->
+        <div class="helpline-section-heading">
+          <i class="fa-solid fa-shield-halved" style="color:var(--emergency-red)"></i>
+          <span>National &amp; State Emergency Helplines</span>
+        </div>
+
+        <div class="helplines-cards-grid">
+          <!-- 112 -->
+          <div class="helpline-card card-critical">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-red">National Unified</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-red"><i class="fa-solid fa-phone"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">112</div>
+                <div class="helpline-title">All-in-One National Emergency Helpline</div>
+                <div class="helpline-desc">Unified single emergency number for Police, Fire, Ambulance &amp; Disaster Search and Rescue across India.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:112" class="btn-call-helpline call-critical"><i class="fa-solid fa-phone-flip"></i> Call 112</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('112', 'National Emergency Hotline')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 1078 -->
+          <div class="helpline-card card-ndma">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-orange">NDMA Disaster Control</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-orange"><i class="fa-solid fa-cloud-bolt"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">1078</div>
+                <div class="helpline-title">National Disaster Management Authority (NDMA)</div>
+                <div class="helpline-desc">Apex disaster response control room for flood, cyclone, earthquake, and major emergency assistance.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:1078" class="btn-call-helpline call-orange"><i class="fa-solid fa-phone-flip"></i> Call 1078</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('1078', 'NDMA Disaster Helpline')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 108 -->
+          <div class="helpline-card card-ambulance">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-green">Disaster Medical</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-green"><i class="fa-solid fa-truck-medical"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">108</div>
+                <div class="helpline-title">Emergency Medical &amp; Trauma Ambulance</div>
+                <div class="helpline-desc">Free paramedic ambulance transit, oxygen support, critical injury extraction, and casualty triage.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:108" class="btn-call-helpline call-green"><i class="fa-solid fa-phone-flip"></i> Call 108</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('108', 'Emergency Ambulance 108')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 1070 -->
+          <div class="helpline-card card-blue">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-blue">State Government</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-blue"><i class="fa-solid fa-building-shield"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">1070</div>
+                <div class="helpline-title">State Emergency Operations Center (SEOC)</div>
+                <div class="helpline-desc">State relief commissioner command center coordinating inter-district rations, boats, and air-drops.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:1070" class="btn-call-helpline call-blue"><i class="fa-solid fa-phone-flip"></i> Call 1070</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('1070', 'State EOC Control Room')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 1077 -->
+          <div class="helpline-card card-teal">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-teal">District Administration</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-teal"><i class="fa-solid fa-city"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">1077</div>
+                <div class="helpline-title">District Emergency Operations Center (DEOC)</div>
+                <div class="helpline-desc">District Magistrate / Collectorate command line for localized camp shelters and relief distribution.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:1077" class="btn-call-helpline call-teal"><i class="fa-solid fa-phone-flip"></i> Call 1077</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('1077', 'District EOC Control Room')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 101 -->
+          <div class="helpline-card card-rose">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-rose">Search &amp; Rescue</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-rose"><i class="fa-solid fa-fire-extinguisher"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">101</div>
+                <div class="helpline-title">Fire &amp; Rescue Services Disaster Wing</div>
+                <div class="helpline-desc">Inundation water rescue, building collapse victim extraction, and specialized disaster firefighting.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:101" class="btn-call-helpline call-rose"><i class="fa-solid fa-phone-flip"></i> Call 101</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('101', 'Fire & Rescue 101')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 100 -->
+          <div class="helpline-card card-navy">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-navy">Evacuation Security</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-navy"><i class="fa-solid fa-shield"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">100</div>
+                <div class="helpline-title">Police Emergency &amp; Evacuation Force</div>
+                <div class="helpline-desc">Relief convoy escort, hazard zone perimeter cordoning, evacuation enforcement, and traffic clearance.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:100" class="btn-call-helpline call-navy"><i class="fa-solid fa-phone-flip"></i> Call 100</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('100', 'Police Emergency 100')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 1098 -->
+          <div class="helpline-card card-purple">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-purple">Child Protection</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-purple"><i class="fa-solid fa-children"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">1098</div>
+                <div class="helpline-title">Childline &amp; Missing Children Welfare</div>
+                <div class="helpline-desc">Immediate assistance, trace, rescue, and shelter care for unaccompanied or separated children in disaster zones.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:1098" class="btn-call-helpline call-purple"><i class="fa-solid fa-phone-flip"></i> Call 1098</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('1098', 'Childline 1098')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 1091 / 181 -->
+          <div class="helpline-card card-pink">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-pink">Women Safety</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-pink"><i class="fa-solid fa-person-shelter"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">1091 / 181</div>
+                <div class="helpline-title">Women Distress &amp; Shelter Support</div>
+                <div class="helpline-desc">Safe relief camp accommodation, infant medical care, hygiene supplies, and trauma counseling for women.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:1091" class="btn-call-helpline call-pink"><i class="fa-solid fa-phone-flip"></i> Call 1091</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('1091', 'Women Distress Helpline')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <!-- 14420 / 1912 -->
+          <div class="helpline-card card-amber">
+            <div class="helpline-card-top">
+              <span class="helpline-type-badge badge-amber">Infrastructure Grid</span>
+              <span class="helpline-tollfree-tag"><i class="fa-solid fa-bolt"></i> 24x7 Free</span>
+            </div>
+            <div class="helpline-card-main">
+              <div class="helpline-icon-wrap icon-amber"><i class="fa-solid fa-bolt-lightning"></i></div>
+              <div class="helpline-info">
+                <div class="helpline-digits">1912 / 14420</div>
+                <div class="helpline-title">Disaster Power Grid &amp; Telecom Restoration</div>
+                <div class="helpline-desc">Emergency electricity restoration priority for relief shelters, medical oxygen plants, and water pumps.</div>
+              </div>
+            </div>
+            <div class="helpline-card-actions">
+              <a href="tel:1912" class="btn-call-helpline call-amber"><i class="fa-solid fa-phone-flip"></i> Call 1912</a>
+              <button type="button" class="btn-copy-helpline" onclick="copyHelplineNumber('1912', 'Power Restoration Grid')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Active Field Relief Camp Control Rooms (Dynamic from LocalStorage) -->
+        <div class="helpline-section-heading" style="margin-top:1.5rem;">
+          <i class="fa-solid fa-campground" style="color:var(--teal-primary)"></i>
+          <span>Active Field Relief Camp Control Rooms (ResQNet Live Zones)</span>
+        </div>
+        <p style="font-size:0.75rem; color:#64748B; margin-bottom:0.75rem;">
+          Direct verified field coordinator contacts for currently active disaster relief centers registered in the database:
+        </p>
+
+        <div id="campHelplinesContainer" class="camp-helplines-grid">
+          <!-- Populated dynamically by script.js renderCampHelplines() -->
+        </div>
+
+        <!-- Section 3: Standard Emergency Communication Protocol -->
+        <div class="emergency-protocol-card">
+          <div class="protocol-header">
+            <i class="fa-solid fa-circle-info" style="color:#0284C7;"></i>
+            <strong>Emergency Distress Caller Protocol (Guidelines for reporting to 112/1078 operators):</strong>
+          </div>
+          <div class="protocol-steps">
+            <div class="step-item">
+              <span class="step-num">1</span>
+              <div><strong>Exact Coordinates &amp; Landmarks:</strong> Clearly specify your village, ward, district, and nearest known landmark (school, bridge, or temple).</div>
+            </div>
+            <div class="step-item">
+              <span class="step-num">2</span>
+              <div><strong>Casualties &amp; Stranded Count:</strong> State approximate number of trapped individuals, prioritizing infants, pregnant women, and elderly.</div>
+            </div>
+            <div class="step-item">
+              <span class="step-num">3</span>
+              <div><strong>Primary Urgent Need:</strong> State whether the immediate requirement is flood rescue boat, drinking water, trauma medical kit, or dry food rations.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="background:#F8FAFC; border-top:1px solid #E2E8F0;">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('helplineModal')">Close Directory</button>
       </div>
     </div>
   </div>
